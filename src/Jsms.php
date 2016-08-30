@@ -1,0 +1,66 @@
+<?php
+
+namespace JPush;
+
+final class Jsms {
+
+    const code_url = 'https://api.sms.jpush.cn/v1/codes';
+
+    private $appKey;
+    private $masterSecret;
+
+    public function __construct($appKey, $masterSecret) {
+        $this->appKey = $appKey;
+        $this->masterSecret = $masterSecret;
+    }
+
+    public function sendCode($mobile, $temp_id) {
+        $url = self::code_url;
+        $body = array('mobile' => $mobile, 'temp_id' => $temp_id);
+        return $this->sendPost($url, $body);
+    }
+
+    public function checkCode($msg_id, $code) {
+        $url = self::code_url . "/" . $msg_id . "/valid" ;
+        $body = array('code' => $code);
+        return $this->sendPost($url, $body);
+    }
+
+    private function sendPost($url, $body) {
+        $ch = curl_init();
+        $options = array(
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => true,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Connection: Keep-Alive'
+            ),
+            CURLOPT_USERAGENT => 'JSMS-API-PHP-CLIENT',
+            CURLOPT_CONNECTTIMEOUT => 20,
+            CURLOPT_TIMEOUT => 120,
+
+            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+            CURLOPT_USERPWD => $this->appKey . ":" . $this->masterSecret,
+
+            CURLOPT_URL => $url,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($body)
+        );
+        curl_setopt_array($ch, $options);
+        $output = curl_exec($ch);
+
+        if($output === false) {
+            return "Error Code:" . curl_errno($ch) . ", Error Message:".curl_error($ch);
+        } else {
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+            $header_text = substr($output, 0, $header_size);
+            $body = substr($output, $header_size);
+
+            $response['body'] = $body;
+            $response['http_code'] = $httpCode;
+        }
+        curl_close($ch);
+        return $response;
+    }
+}

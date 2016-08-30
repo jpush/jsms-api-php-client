@@ -1,0 +1,12 @@
+{
+    "name": "jpush/jsms",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "JPush",
+            "email": "support@jpush.cn"
+        }
+    ],
+    "require": {}
+}
