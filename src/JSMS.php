@@ -1,8 +1,8 @@
 <?php
 
-namespace JPush;
+namespace JiGuang;
 
-final class Jsms {
+final class JSMS {
 
     const code_url = 'https://api.sms.jpush.cn/v1/codes';
 

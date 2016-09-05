@@ -1,5 +1,5 @@
 {
-    "name": "jpush/jsms",
+    "name": "jiguang/jsms",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -12,6 +12,6 @@
         "php": ">=5.3.3"
     },
     "autoload" : {
-        "psr-4": {"JPush\\": "src/"}
+        "psr-4": {"JiGuang\\": "src/"}
     }
 }
