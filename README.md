@@ -4,7 +4,8 @@
 
 对应的 API 文档：http://docs.jiguang.cn/server/rest_api_jsms/
 
-> 支持的 PHP 版本: 5.3.3 ～ 5.6.x, 7.0.x
+> 支持的 PHP 版本: 5.3.3 ～ 5.6.x, 7.0.x  
+> 须启用 cURL 扩展
 
 ## Installation
 
@@ -12,7 +13,7 @@
 
 ```json
 "require": {
-    "jiguang/jsms": "1.0*"
+    "jiguang/jsms": "v1.0*"
 }
 ```
 
