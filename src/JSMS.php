@@ -33,6 +33,9 @@ final class JSMS {
     }
 
     public function sendMessage($mobile, $temp_id, $temp_para) {
+        if(!is_array($temp_para)) {
+            throw new \InvalidArgumentException("Argument temp_para must be an array");
+        }
         $url = self::code_url . '/messages';
         $body = array(
             'mobile' => $mobile,

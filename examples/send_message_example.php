@@ -9,8 +9,10 @@ $phone = 'xxxxxxxxxxx';
 $temp_id = '6666';
 $temp_para = ['test' => 'jiguang'];
 
-
 $client = new \JiGuang\JSMS($appKey, $masterSecret);
 $response = $client->sendMessage($phone, $temp_id, $temp_para);
 
 print_r($response);
+
+// will threw an InvalidArgumentException:
+// $client->sendMessage($phone, $temp_id, 'temp_para');

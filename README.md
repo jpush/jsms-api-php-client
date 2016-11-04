@@ -61,7 +61,7 @@ $client->sendVoiceCode($phone, $ttl);
 > 参数说明:
 
 > $phone: 接收验证码的手机号码
-> $ttl: 超时时间，默认为60秒
+> $ttl: 超时时间，默认为 60 秒
 
 #### 验证
 
@@ -73,6 +73,18 @@ $client->checkCode($msg_id, $code)
 
 > $msg_id: 发送验证码 sendCode 函数返回的数组中的 msg_id 键对应的值  
 > $code: 手机接收到的验证码
+
+#### 发送模板短信
+
+```php
+$client->sendMessage($mobile, $temp_id, $temp_para)
+```
+
+> 参数说明:
+
+> $phone: 接收验证码的手机号码
+> $temp_id: 模板 ID
+> $temp_para: 模板参数,需要替换的参数名和 value 的键值对,仅接受数组类型的值
 
 #### 调用返回码说明
 
