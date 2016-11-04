@@ -47,8 +47,21 @@ $client->sendCode($phone, $temp_id);
 
 > 参数说明:
 
-> $phone: 接收验证码的手机号码  
+> $phone: 接收验证码的手机号码
 > $temp_id: 模板ID
+
+#### 发送语音短信验证码
+
+```php
+$client->sendVoiceCode($phone);
+# OR
+$client->sendVoiceCode($phone, $ttl);
+```
+
+> 参数说明:
+
+> $phone: 接收验证码的手机号码
+> $ttl: 超时时间，默认为60秒
 
 #### 验证
 

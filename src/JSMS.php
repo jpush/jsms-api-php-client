@@ -4,7 +4,7 @@ namespace JiGuang;
 
 final class JSMS {
 
-    const code_url = 'https://api.sms.jpush.cn/v1/codes';
+    const code_url = 'https://api.sms.jpush.cn/v1';
 
     private $appKey;
     private $masterSecret;
@@ -15,14 +15,30 @@ final class JSMS {
     }
 
     public function sendCode($mobile, $temp_id) {
-        $url = self::code_url;
+        $url = self::code_url . '/codes';
         $body = array('mobile' => $mobile, 'temp_id' => $temp_id);
         return $this->sendPost($url, $body);
     }
 
+    public function sendVoiceCode($mobile, $ttl=null) {
+        $url = self::code_url . '/voice_codes';
+        $body = array('mobile' => $mobile, 'ttl' => $ttl);
+        return $this->sendPost($url, $body);
+    }
+
     public function checkCode($msg_id, $code) {
-        $url = self::code_url . "/" . $msg_id . "/valid" ;
+        $url = self::code_url . '/codes/' . $msg_id . "/valid";
         $body = array('code' => $code);
+        return $this->sendPost($url, $body);
+    }
+
+    public function sendMessage($mobile, $temp_id, $temp_para) {
+        $url = self::code_url . '/messages';
+        $body = array(
+            'mobile' => $mobile,
+            'temp_id' => $temp_id,
+            'temp_para' => $temp_para
+        );
         return $this->sendPost($url, $body);
     }
 
