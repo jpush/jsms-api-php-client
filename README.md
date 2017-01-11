@@ -39,6 +39,15 @@ OR
 $client = new \JiGuang\JSMS($app_key, $master_secret);
 ```
 
+#### 证书问题
+
+```php
+// 禁用 SSL 证书的验证，
+$client = new JSMS($app_key, $master_secret, [ 'ssl_verify' => false ]);
+```
+
+**希望开发者在了解相关风险的前提下如此处理 SSL 证书问题。**
+
 #### 发送验证码
 
 ```php
@@ -71,7 +80,7 @@ $client->checkCode($msg_id, $code)
 
 > 参数说明:
 
-> $msg_id: 发送验证码 sendCode 函数返回的数组中的 msg_id 键对应的值  
+> $msg_id: 发送验证码 sendCode 函数返回的数组中的 msg_id 键对应的值
 > $code: 手机接收到的验证码
 
 #### 发送模板短信

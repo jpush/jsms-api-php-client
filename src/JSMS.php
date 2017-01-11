@@ -8,10 +8,14 @@ final class JSMS {
 
     private $appKey;
     private $masterSecret;
+    private $options;
 
-    public function __construct($appKey, $masterSecret) {
+    public function __construct($appKey, $masterSecret, array $options = array()) {
         $this->appKey = $appKey;
         $this->masterSecret = $masterSecret;
+        $this->options = array_merge([
+            'ssl_verify'=> true
+        ], $options);
     }
 
     public function sendCode($mobile, $temp_id) {
@@ -65,6 +69,10 @@ final class JSMS {
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => json_encode($body)
         );
+        if (!$this->options['ssl_verify']) {
+            $options[CURLOPT_SSL_VERIFYPEER] = false;
+            $options[CURLOPT_SSL_VERIFYHOST] = 0;
+        }
         curl_setopt_array($ch, $options);
         $output = curl_exec($ch);
 
