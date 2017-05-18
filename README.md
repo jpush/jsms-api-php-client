@@ -13,7 +13,7 @@
 
 ```json
 "require": {
-    "jiguang/jsms": "v1.0*"
+    "jiguang/jsms": "v1.0.*"
 }
 ```
 
