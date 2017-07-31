@@ -14,7 +14,8 @@ final class JSMS {
         $this->appKey = $appKey;
         $this->masterSecret = $masterSecret;
         $this->options = array_merge([
-            'ssl_verify'=> true
+            'ssl_verify'  => true,
+            'disable_ssl' => false
         ], $options);
     }
 
@@ -66,7 +67,8 @@ final class JSMS {
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => json_encode($body)
         );
-        if (!$this->options['ssl_verify']) {
+        if (!$this->options['ssl_verify']
+            || (bool) $this->options['disable_ssl']) {
             $options[CURLOPT_SSL_VERIFYPEER] = false;
             $options[CURLOPT_SSL_VERIFYHOST] = 0;
         }

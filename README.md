@@ -4,7 +4,7 @@
 
 对应的 API 文档：http://docs.jiguang.cn/server/rest_api_jsms/
 
-> 支持的 PHP 版本: 5.3.3 ～ 5.6.x, 7.0.x  
+> 支持的 PHP 版本: 5.3.3 ～ 5.6.x, 7.0.x
 > 须启用 cURL 扩展
 
 ## Installation
@@ -43,7 +43,7 @@ $client = new \JiGuang\JSMS($app_key, $master_secret);
 
 ```php
 // 禁用 SSL 证书的验证，
-$client = new JSMS($app_key, $master_secret, [ 'ssl_verify' => false ]);
+$client = new JSMS($app_key, $master_secret, [ 'disable_ssl' => true ]);
 ```
 
 **希望开发者在了解相关风险的前提下如此处理 SSL 证书问题。**
