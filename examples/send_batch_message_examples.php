@@ -3,15 +3,12 @@ require_once __DIR__ . '/../src/JSMS.php';
 
 $appKey = 'xxxx';
 $masterSecret = 'xxxx';
-$phone = 'xxxxxxxxxxx';
-
-# 这里的 $temp_id 和 $temp_para 的值需要到 "极光控制台 -> 短信验证码 -> 模板管理" 里面获取
 $temp_id = '6666';
 
 /* 这里 $recipients 的格式是
 $recipients = [
-    $mobile => $temp_para,
-    $mobile => $temp_para,
+    $phone0 => $temp_para,
+    $phone1 => $temp_para,
     ...
 ];
 
@@ -29,6 +26,9 @@ $recipients = [
 
 $client = new \JiGuang\JSMS($appKey, $masterSecret);
 $response = $client->sendBatchMessage($temp_id, $recipients);
-
 print_r($response);
 
+// 定时批量短信
+$time = '2017-08-31 12:04:44';
+$response = $client->sendBatchMessage($temp_id, $recipients, $time);
+print_r($response);

@@ -37,28 +37,38 @@ final class JSMS {
         return $this->sendPost($url, $body);
     }
 
-    public function sendMessage($mobile, $temp_id, array $temp_para = []) {
-        $url = self::code_url . '/messages';
+    public function sendMessage($mobile, $temp_id, array $temp_para = [], $time = null) {
+        $path = '/messages';
         $body = array(
-            'mobile' => $mobile,
-            'temp_id' => $temp_id,
-            'temp_para' => $temp_para
+            'mobile'    => $mobile,
+            'temp_id'   => $temp_id,
+            'temp_para' => $temp_para,
         );
+        if (isset($time)) {
+            $path = '/schedule';
+            $body['send_time'] = $time;
+        }
+        $url = self::code_url . $path;
         return $this->sendPost($url, $body);
     }
 
-    public function sendBatchMessage($temp_id, array $recipients) {
-        $url = self::code_url . '/messages/batch';
+    public function sendBatchMessage($temp_id, array $recipients, $time = null) {
+        $path = '/messages';
         foreach ($recipients as $mobile => $temp_para) {
             $r[] = array(
-                'mobile' => $mobile,
+                'mobile'    => $mobile,
                 'temp_para' => $temp_para
             );
         }
         $body = array(
-            'temp_id' => $temp_id,
+            'temp_id'    => $temp_id,
             'recipients' => $r
         );
+        if (isset($time)) {
+            $path = '/schedule';
+            $body['send_time'] = $time;
+        }
+        $url = self::code_url . $path . '/batch';
         return $this->sendPost($url, $body);
     }
 

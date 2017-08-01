@@ -16,3 +16,10 @@ print_r($response);
 
 // will threw an InvalidArgumentException:
 // $client->sendMessage($phone, $temp_id, 'temp_para');
+
+
+// 定时短信
+$time = '2017-08-31 12:04:44';
+$response = $client->sendMessage($phone, $temp_id, $temp_para, $time);
+
+print_r($response);

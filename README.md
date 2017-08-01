@@ -89,7 +89,7 @@ $client->checkCode($msg_id, $code);
 #### 发送模板短信
 
 ```php
-$client->sendMessage($mobile, $temp_id, array $temp_para);
+$client->sendMessage($mobile, $temp_id, array $temp_para = [], $time = null);
 ```
 
 **参数说明:**
@@ -100,10 +100,12 @@ $client->sendMessage($mobile, $temp_id, array $temp_para);
 
 > $temp_para: 模板参数,需要替换的参数名和 value 的键值对,仅接受数组类型的值
 
+> $time: 定时短信发送时间，格式为 yyyy-MM-dd HH:mm:ss，默认为 `null` 表示立即发送
+
 #### 发送批量模板短信
 
 ```php
-$client->sendBatchMessage($temp_id, array $recipients);
+$client->sendBatchMessage($temp_id, array $recipients， $time = null);
 ```
 
 **参数说明:**
@@ -111,6 +113,8 @@ $client->sendBatchMessage($temp_id, array $recipients);
 > $temp_id: 模板 ID
 
 > $recipients: 接收者列表，接受一个以 mobile 为键，对应其 temp_para 为值的关联数组
+
+> $time: 定时短信发送时间，格式为 yyyy-MM-dd HH:mm:ss，默认为 `null` 表示立即发送
 
 #### 调用返回码说明
 
