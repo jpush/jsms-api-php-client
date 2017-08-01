@@ -54,9 +54,10 @@ $client = new JSMS($app_key, $master_secret, [ 'disable_ssl' => true ]);
 $client->sendCode($phone, $temp_id);
 ```
 
-> 参数说明:
+**参数说明:**
 
 > $phone: 接收验证码的手机号码
+
 > $temp_id: 模板ID
 
 #### 发送语音短信验证码
@@ -67,33 +68,49 @@ $client->sendVoiceCode($phone);
 $client->sendVoiceCode($phone, $ttl);
 ```
 
-> 参数说明:
+**参数说明:**
 
 > $phone: 接收验证码的手机号码
+
 > $ttl: 超时时间，默认为 60 秒
 
 #### 验证
 
 ```php
-$client->checkCode($msg_id, $code)
+$client->checkCode($msg_id, $code);
 ```
 
-> 参数说明:
+**参数说明:**
 
 > $msg_id: 发送验证码 sendCode 函数返回的数组中的 msg_id 键对应的值
+
 > $code: 手机接收到的验证码
 
 #### 发送模板短信
 
 ```php
-$client->sendMessage($mobile, $temp_id, $temp_para)
+$client->sendMessage($mobile, $temp_id, array $temp_para);
 ```
 
-> 参数说明:
+**参数说明:**
 
 > $phone: 接收验证码的手机号码
+
 > $temp_id: 模板 ID
+
 > $temp_para: 模板参数,需要替换的参数名和 value 的键值对,仅接受数组类型的值
+
+#### 发送批量模板短信
+
+```php
+$client->sendBatchMessage($temp_id, array $recipients);
+```
+
+**参数说明:**
+
+> $temp_id: 模板 ID
+
+> $recipients: 接收者列表，接受一个以 mobile 为键，对应其 temp_para 为值的关联数组
 
 #### 调用返回码说明
 

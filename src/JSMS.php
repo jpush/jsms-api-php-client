@@ -47,6 +47,21 @@ final class JSMS {
         return $this->sendPost($url, $body);
     }
 
+    public function sendBatchMessage($temp_id, array $recipients) {
+        $url = self::code_url . '/messages/batch';
+        foreach ($recipients as $mobile => $temp_para) {
+            $r[] = array(
+                'mobile' => $mobile,
+                'temp_para' => $temp_para
+            );
+        }
+        $body = array(
+            'temp_id' => $temp_id,
+            'recipients' => $r
+        );
+        return $this->sendPost($url, $body);
+    }
+
     private function sendPost($url, $body) {
         $ch = curl_init();
         $options = array(
