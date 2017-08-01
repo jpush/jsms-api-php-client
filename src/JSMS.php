@@ -4,7 +4,7 @@ namespace JiGuang;
 
 final class JSMS {
 
-    const code_url = 'https://api.sms.jpush.cn/v1';
+    const URL = 'https://api.sms.jpush.cn/v1/';
 
     private $appKey;
     private $masterSecret;
@@ -20,40 +20,40 @@ final class JSMS {
     }
 
     public function sendCode($mobile, $temp_id) {
-        $url = self::code_url . '/codes';
+        $url = self::URL . 'codes';
         $body = array('mobile' => $mobile, 'temp_id' => $temp_id);
-        return $this->sendPost($url, $body);
+        return $this->request('POST', $url, $body);
     }
 
     public function sendVoiceCode($mobile, $ttl=null) {
-        $url = self::code_url . '/voice_codes';
+        $url = self::URL . 'voice_codes';
         $body = array('mobile' => $mobile, 'ttl' => $ttl);
-        return $this->sendPost($url, $body);
+        return $this->request('POST', $url, $body);
     }
 
     public function checkCode($msg_id, $code) {
-        $url = self::code_url . '/codes/' . $msg_id . "/valid";
+        $url = self::URL . 'codes/' . $msg_id . "/valid";
         $body = array('code' => $code);
-        return $this->sendPost($url, $body);
+        return $this->request('POST', $url, $body);
     }
 
     public function sendMessage($mobile, $temp_id, array $temp_para = [], $time = null) {
-        $path = '/messages';
+        $path = 'messages';
         $body = array(
             'mobile'    => $mobile,
             'temp_id'   => $temp_id,
             'temp_para' => $temp_para,
         );
         if (isset($time)) {
-            $path = '/schedule';
+            $path = 'schedule';
             $body['send_time'] = $time;
         }
-        $url = self::code_url . $path;
-        return $this->sendPost($url, $body);
+        $url = self::URL . $path;
+        return $this->request('POST', $url, $body);
     }
 
     public function sendBatchMessage($temp_id, array $recipients, $time = null) {
-        $path = '/messages';
+        $path = 'messages';
         foreach ($recipients as $mobile => $temp_para) {
             $r[] = array(
                 'mobile'    => $mobile,
@@ -65,14 +65,29 @@ final class JSMS {
             'recipients' => $r
         );
         if (isset($time)) {
-            $path = '/schedule';
+            $path = 'schedule';
             $body['send_time'] = $time;
         }
-        $url = self::code_url . $path . '/batch';
-        return $this->sendPost($url, $body);
+        $url = self::URL . $path . '/batch';
+        return $this->request('POST', $url, $body);
     }
 
-    private function sendPost($url, $body) {
+    public function showSchedule($scheduleId) {
+        $url = self::URL . 'schedule/' . $scheduleId;
+        return $this->request('GET', $url);
+    }
+
+    public function deleteSchedule($scheduleId) {
+        $url = self::URL . 'schedule/' . $scheduleId;
+        return $this->request('DELETE', $url);
+    }
+
+    public function getAppBalance() {
+        $url = self::URL . 'accounts/app';
+        return $this->request('GET', $url);
+    }
+
+    private function request($method, $url, $body = []) {
         $ch = curl_init();
         $options = array(
             CURLOPT_RETURNTRANSFER => true,
@@ -89,13 +104,15 @@ final class JSMS {
             CURLOPT_USERPWD => $this->appKey . ":" . $this->masterSecret,
 
             CURLOPT_URL => $url,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => json_encode($body)
+            CURLOPT_CUSTOMREQUEST => $method,
         );
         if (!$this->options['ssl_verify']
             || (bool) $this->options['disable_ssl']) {
             $options[CURLOPT_SSL_VERIFYPEER] = false;
             $options[CURLOPT_SSL_VERIFYHOST] = 0;
+        }
+         if (!empty($body)) {
+            $options[CURLOPT_POSTFIELDS] = json_encode($body);
         }
         curl_setopt_array($ch, $options);
         $output = curl_exec($ch);
@@ -107,8 +124,21 @@ final class JSMS {
             $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
             $header_text = substr($output, 0, $header_size);
             $body = substr($output, $header_size);
+            $headers = array();
 
-            $response['body'] = $body;
+            foreach (explode("\r\n", $header_text) as $i => $line) {
+                if (!empty($line)) {
+                    if ($i === 0) {
+                        $headers[0] = $line;
+                    } else if (strpos($line, ": ")) {
+                        list ($key, $value) = explode(': ', $line);
+                        $headers[$key] = $value;
+                    }
+                }
+            }
+
+            $response['headers'] = $headers;
+            $response['body'] = json_decode($body, true);
             $response['http_code'] = $httpCode;
         }
         curl_close($ch);

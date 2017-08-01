@@ -116,6 +116,24 @@ $client->sendBatchMessage($temp_id, array $recipients， $time = null);
 
 > $time: 定时短信发送时间，格式为 yyyy-MM-dd HH:mm:ss，默认为 `null` 表示立即发送
 
+#### 查询定时模板短信
+
+```php
+$client->showSchedule($scheduleId);
+```
+
+#### 删除定时模板短信
+
+```php
+$client->deleteSchedule($scheduleId);
+```
+
+#### 应用余量查询
+
+```php
+$client->getAppBalance();
+```
+
 #### 调用返回码说明
 
 http://docs.jiguang.cn/server/rest_api_jsms/#_12
