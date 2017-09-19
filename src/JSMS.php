@@ -25,9 +25,17 @@ final class JSMS {
         return $this->request('POST', $url, $body);
     }
 
-    public function sendVoiceCode($mobile, $ttl=null) {
+    public function sendVoiceCode($mobile, $options = []) {
         $url = self::URL . 'voice_codes';
-        $body = array('mobile' => $mobile, 'ttl' => $ttl);
+        $body = array('mobile' => $mobile);
+
+        if (!empty($options)) {
+            if (is_array($options)) {
+                $body = array_merge($options, $body);
+            } else {
+                $body['ttl'] = $options;
+            }
+        }
         return $this->request('POST', $url, $body);
     }
 

@@ -63,16 +63,18 @@ $client->sendCode($phone, $temp_id);
 #### 发送语音短信验证码
 
 ```php
-$client->sendVoiceCode($phone);
-# OR
-$client->sendVoiceCode($phone, $ttl);
+$client->sendVoiceCode($phone, $options = []);
 ```
 
 **参数说明:**
 
 > $phone: 接收验证码的手机号码
 
-> $ttl: 超时时间，默认为 60 秒
+> $options: 可选选项数组，接受 3 个键 `ttl`，`code`，`voice_lang` 中的一个或多个。
+
+- ttl: 超时时间，默认为 60 秒
+- code: 语音验证码的值，验证码仅支持 4-8 个数字
+- voice_lang: 播报语言选择，0：中文播报，1：英文播报，2：中英混合播报
 
 #### 验证
 
