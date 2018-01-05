@@ -50,8 +50,10 @@ final class JSMS {
         $body = array(
             'mobile'    => $mobile,
             'temp_id'   => $temp_id,
-            'temp_para' => $temp_para,
         );
+        if (!empty($temp_para)) {
+            $body['temp_para'] = $temp_para;
+        }
         if (isset($time)) {
             $path = 'schedule';
             $body['send_time'] = $time;
