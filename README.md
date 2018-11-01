@@ -150,7 +150,7 @@ http://docs.jiguang.cn/server/rest_api_jsms/#_12
 
 > 假定当前目录为 JSMS 源码所在的根目录
 
-- 编辑 send_example.php 文件，填写信息
+- 编辑 `examples/config.php` 文件，填写信息
 
 ```php
 $appKey = 'xxxx';
@@ -162,14 +162,13 @@ $phone = 'xxxxxxxxxxx';
 
 - 获取 `msg_id` 和 `code`
 
-- 编辑 check_example.php 文件，填写信息
+- 编辑 `examples/check_example.php` 文件，填写信息
 
 ```php
-$appKey = 'xxxx';
-$masterSecret = 'xxxx';
 $msg_id = 'xxxx';
 $code = 'xxxxxx';
 ```
+
 - 运行示例 `$ php examples/check_example.php`
 
 ## Contributing

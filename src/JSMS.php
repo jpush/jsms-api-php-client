@@ -97,15 +97,14 @@ final class JSMS {
         return $this->request('GET', $url);
     }
 
-    private function request($method, $url, $body = []) {
+    public function request($method, $url, $body = [], $headers = [], $uploads = []) {
         $ch = curl_init();
         $options = array(
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => true,
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json',
+            CURLOPT_HTTPHEADER => array_merge(array(
                 'Connection: Keep-Alive'
-            ),
+            ), $headers),
             CURLOPT_USERAGENT => 'JSMS-API-PHP-CLIENT',
             CURLOPT_CONNECTTIMEOUT => 20,
             CURLOPT_TIMEOUT => 120,
@@ -121,9 +120,23 @@ final class JSMS {
             $options[CURLOPT_SSL_VERIFYPEER] = false;
             $options[CURLOPT_SSL_VERIFYHOST] = 0;
         }
-         if (!empty($body)) {
-            $options[CURLOPT_POSTFIELDS] = json_encode($body);
+
+        if (in_array('Content-Type: multipart/form-data', $options[CURLOPT_HTTPHEADER])) {
+            $options[CURLOPT_POSTFIELDS] = array_merge($body, $uploads);
+            if (class_exists('\CURLFile')) {
+                $options[CURLOPT_SAFE_UPLOAD] = true;
+            } else {
+                if (defined('CURLOPT_SAFE_UPLOAD')) {
+                    $options[CURLOPT_SAFE_UPLOAD] = false;
+                }
+            }
+        } else {
+            $options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json';
+            if (!empty($body)) {
+                $options[CURLOPT_POSTFIELDS] = json_encode($body);
+            }
         }
+
         curl_setopt_array($ch, $options);
         $output = curl_exec($ch);
 

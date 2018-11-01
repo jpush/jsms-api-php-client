@@ -1,9 +1,6 @@
 <?php
-require_once __DIR__ . '/../src/JSMS.php';
+require __DIR__ . '/config.php';
 
-$appKey = 'xxxx';
-$masterSecret = 'xxxx';
-$temp_id = '6666';
 
 /* 这里 $recipients 的格式是
 $recipients = [
@@ -23,8 +20,6 @@ $recipients = [
     '13800138004' => [ 'test' => 'jiguang4' ],
 ];
 
-
-$client = new \JiGuang\JSMS($appKey, $masterSecret);
 $response = $client->sendBatchMessage($temp_id, $recipients);
 print_r($response);
 
