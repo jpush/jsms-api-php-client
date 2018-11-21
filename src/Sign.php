@@ -10,15 +10,15 @@ class Sign {
         $this->client = $client;
     }
 
-    public function create($sign, $image0=null, $image1=null, $image2=null, $image3=null) {
+    public function create($sign, $image0=null, $type=null, $remark=null) {
         $uri = self::BASE_URI;
-        $response = $this->form($uri, $sign, $image0, $image1, $image2, $image3);
+        $response = $this->form($uri, $sign, $image0, $type, $remark);
         return $response;
     }
 
-    public function update($signId, $sign, $image0=null, $image1=null, $image2=null, $image3=null) {
+    public function update($signId, $sign, $image0=null, $type=null, $remark=null) {
         $uri = self::BASE_URI . $signId;
-        $response = $this->form($uri, $sign, $image0, $image1, $image2, $image3);
+        $response = $this->form($uri, $sign, $image0, $type, $remark);
         return $response;
     }
 
@@ -32,23 +32,21 @@ class Sign {
         return $this->client->request('DELETE', $uri);
     }
 
-    private function form($uri, $sign, $image0, $image1, $image2, $image3) {
+    private function form($uri, $sign, $image0, $type, $remark) {
         $headers = [ 'Content-Type: multipart/form-data' ];
-        $body = ['sign' => $sign ];
-        $uploads = [];
-        $images = [
-            'image0' => $image0,
-            'image1' => $image1,
-            'image2' => $image2,
-            'image3' => $image3
+        $body = [
+            'sign'      => $sign,
+            'image0'    => $image0,
+            'type'      => $type,
+            'remark'    => $remark
         ];
-        foreach ($images as $key => $value) {
-            if (!is_null($value)) {
-                if (class_exists('\CURLFile')) {
-                    $uploads[$key] = new \CURLFile($value);
-                } else {
-                    $uploads[$key] = '@' . $value;
-                }
+
+        $uploads = array();
+        if (!is_null($image0)) {
+            if (class_exists('\CURLFile')) {
+                $uploads['image0'] = new \CURLFile($image0);
+            } else {
+                $uploads['image0'] = '@' . $image0;
             }
         }
         return $this->client->request('POST', $uri, $body, $headers, $uploads);
