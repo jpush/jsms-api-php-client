@@ -51,7 +51,7 @@ $client = new JSMS($app_key, $master_secret, [ 'disable_ssl' => true ]);
 #### 发送验证码
 
 ```php
-$client->sendCode($phone, $temp_id);
+$client->sendCode($phone, $temp_id, $sign = null);
 ```
 
 **参数说明:**
@@ -59,6 +59,8 @@ $client->sendCode($phone, $temp_id);
 > $phone: 接收验证码的手机号码
 
 > $temp_id: 模板ID
+
+> $sign_id: 签名ID，null 表示使用应用默认签名
 
 #### 发送语音短信验证码
 
@@ -91,7 +93,7 @@ $client->checkCode($msg_id, $code);
 #### 发送模板短信
 
 ```php
-$client->sendMessage($mobile, $temp_id, array $temp_para = [], $time = null);
+$client->sendMessage($mobile, $temp_id, array $temp_para = [], $time = null, $sign_id = null);
 ```
 
 **参数说明:**
@@ -104,10 +106,12 @@ $client->sendMessage($mobile, $temp_id, array $temp_para = [], $time = null);
 
 > $time: 定时短信发送时间，格式为 yyyy-MM-dd HH:mm:ss，默认为 `null` 表示立即发送
 
+> $sign_id: 签名ID，null 表示使用应用默认签名
+
 #### 发送批量模板短信
 
 ```php
-$client->sendBatchMessage($temp_id, array $recipients， $time = null);
+$client->sendBatchMessage($temp_id, array $recipients，$time = null, sign_id = null, $tag = null);
 ```
 
 **参数说明:**
@@ -117,6 +121,10 @@ $client->sendBatchMessage($temp_id, array $recipients， $time = null);
 > $recipients: 接收者列表，接受一个以 mobile 为键，对应其 temp_para 为值的关联数组
 
 > $time: 定时短信发送时间，格式为 yyyy-MM-dd HH:mm:ss，默认为 `null` 表示立即发送
+
+> $sign_id: 签名ID，null 表示使用应用默认签名
+
+> $tag: 标签，仅用作标示该短信的别名，不在短信中展示，最多不超过 10 个字
 
 #### 查询定时模板短信
 

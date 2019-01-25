@@ -19,9 +19,12 @@ final class JSMS {
         ], $options);
     }
 
-    public function sendCode($mobile, $temp_id) {
+    public function sendCode($mobile, $temp_id, $sign_id = null) {
         $url = self::URL . 'codes';
         $body = array('mobile' => $mobile, 'temp_id' => $temp_id);
+        if (isset($sign_id)) {
+            $body['sign_id'] = sign_id;
+        }
         return $this->request('POST', $url, $body);
     }
 
@@ -45,7 +48,7 @@ final class JSMS {
         return $this->request('POST', $url, $body);
     }
 
-    public function sendMessage($mobile, $temp_id, array $temp_para = [], $time = null) {
+    public function sendMessage($mobile, $temp_id, array $temp_para = [], $time = null, $sign_id = null) {
         $path = 'messages';
         $body = array(
             'mobile'    => $mobile,
@@ -58,11 +61,14 @@ final class JSMS {
             $path = 'schedule';
             $body['send_time'] = $time;
         }
+        if (isset($sign_id)) {
+            $body['sign_id'] = $sign_id;
+        }
         $url = self::URL . $path;
         return $this->request('POST', $url, $body);
     }
 
-    public function sendBatchMessage($temp_id, array $recipients, $time = null) {
+    public function sendBatchMessage($temp_id, array $recipients, $time = null, $sign_id = null, $tag = null) {
         $path = 'messages';
         foreach ($recipients as $mobile => $temp_para) {
             $r[] = array(
@@ -77,6 +83,12 @@ final class JSMS {
         if (isset($time)) {
             $path = 'schedule';
             $body['send_time'] = $time;
+        }
+        if (isset($sign_id)) {
+            $body['sign_id'] = $sign_id;
+        }
+        if (isset($tag)) {
+            $body['tag'] = $tag;
         }
         $url = self::URL . $path . '/batch';
         return $this->request('POST', $url, $body);
