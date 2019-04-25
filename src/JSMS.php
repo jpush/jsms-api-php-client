@@ -23,7 +23,7 @@ final class JSMS {
         $url = self::URL . 'codes';
         $body = array('mobile' => $mobile, 'temp_id' => $temp_id);
         if (isset($sign_id)) {
-            $body['sign_id'] = sign_id;
+            $body['sign_id'] = $sign_id;
         }
         return $this->request('POST', $url, $body);
     }
